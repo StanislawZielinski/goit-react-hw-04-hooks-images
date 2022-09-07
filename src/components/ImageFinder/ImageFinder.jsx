@@ -20,19 +20,20 @@ const ImageFinder = () => {
     const [searchValue, setSearchValue] = useState('');
 
     useEffect(() => {
-        setIsSpinnerLoading(false);    
+        setIsSpinnerLoading(false);
     },[])
 
     const resetSearch = () => {
-        setImages([]);
-        setPageNr(1);
+        return (setImages([]),
+                setPageNr(1))
     }
     const handleChange = (event) => {
         setSearchValue(event.currentTarget.value);
+        resetSearch();
     }
     const handleSubmit = (event) => {
         event.preventDefault();
-        console.log(searchValue)
+        console.log(error)
         resetSearch();
         fetchImages(searchValue, 1);
         const form = event.currentTarget;
