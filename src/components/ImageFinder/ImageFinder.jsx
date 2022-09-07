@@ -18,23 +18,11 @@ const ImageFinder = () => {
     const [error, setError] = useState(null);
     const [pageNr, setPageNr] = useState(1);
     const [searchValue, setSearchValue] = useState('');
-    // state = {
-    //     images: [],
-    //     isButtonVisible: "hidden",
-    //     isSpinnerLoading: true,
-    //     isModalVisible: "hidden",
-    //     imageLargeURL: "",
-    //     alt: "",
-    //     error: null,
-    //     pageNr: 1,
-    //     searchValue: '',
-    // }
+
     useEffect(() => {
         setIsSpinnerLoading(false);    
     },[])
-    // componentDidMount() {
-    //     this.setState({ isSpinnerLoading: false });
-    // };
+
     const resetSearch = () => {
         setImages([]);
         setPageNr(1);
@@ -55,16 +43,13 @@ const ImageFinder = () => {
         setIsSpinnerLoading(true);
         try {
             const response = await fetch(searchValue, pageNr);
+            console.log(images);
             console.log(response);
             if (response.length > 0) {
                 setIsButtonVisible("visible");
-                setImages(response)
-                setPageNr(pageNr+1)
-                // this.setState({
-                //     isButtonVisible: "visible",
-                //     images: [...this.state.images, ...response],
-                //     pageNr: this.state.pageNr+1,
-                // }) 
+                setImages([...images,...response]);
+                console.log(images);
+                setPageNr(pageNr + 1);
             }
             else {
                 setIsButtonVisible("hidden");
@@ -80,9 +65,9 @@ const ImageFinder = () => {
         }   
     }
 
-    // loadMore = (event) => {
-    //     this.fetchImages(this.state.searchValue, this.state.pageNr);     
-    // }
+    const loadMore = (event) => {
+        fetchImages(searchValue, pageNr);
+    }
     
     const openModal = (event) => {
         event.preventDefault();
@@ -99,15 +84,15 @@ const ImageFinder = () => {
         setImageLargeURL("");
 
     }
-    // closeModalByEsc = (event) => {
-    //     if (event.keyCode === 27) {
-    //         this.setState({
-    //         isModalVisible: "hidden", 
-    //         });
-    //     }
-    // }
+    const closeModalByEsc = (event) => {
+        if (event.keyCode === 27) {
+            setIsModalVisible("hidden");
+        }
+    };
+    if (isModalVisible === "visible") {
+            document.addEventListener('keydown', closeModalByEsc)
+        } 
     const renderImages = (images) => {
-        console.log(images);
         return images.map(
             image =>
                 <li className="ImageGalleryItem" key={image.id} >
@@ -117,14 +102,11 @@ const ImageFinder = () => {
                 </li>)     
     }
 
-        // if (isModalVisible === "visible") {
-        //     document.addEventListener('keydown', this.closeModalByEsc)
-        // } 
         return (
             <div>
                 <Searchbar onSubmit={handleSubmit} onChange={handleChange} />
                 <ImageGallery children={renderImages(images)} ></ImageGallery>
-                {/* <Button loadMore={this.loadMore} isButtonVisible={isButtonVisible} /> */}
+                <Button loadMore={loadMore} isButtonVisible={isButtonVisible} />
                 <Audio className="Audio" visible={isSpinnerLoading} />
                 <Modal isModalVisible={isModalVisible} imageLargeURL={imageLargeURL}
                         alt={alt} closeModal={closeModal}/>
