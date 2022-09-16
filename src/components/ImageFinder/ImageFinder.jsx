@@ -10,9 +10,9 @@ import fetch from "services/api";
 
 const ImageFinder = () => {
     const [images, setImages] = useState([]);
-    const [isButtonVisible, setIsButtonVisible] = useState("hidden");
+    const [isButtonVisible, setIsButtonVisible] = useState(false);
     const [isSpinnerLoading, setIsSpinnerLoading] = useState(true);
-    const [isModalVisible, setIsModalVisible] = useState("hidden");
+    const [isModalVisible, setIsModalVisible] = useState(false);
     const [imageLargeURL, setImageLargeURL] = useState("");
     const [alt, setAlt] = useState("");
     const [error, setError] = useState(null);
@@ -47,13 +47,13 @@ const ImageFinder = () => {
             console.log(images);
             console.log(response);
             if (response.length > 0) {
-                setIsButtonVisible("visible");
+                setIsButtonVisible(true);
                 setImages([...images,...response]);
                 console.log(images);
                 setPageNr(pageNr + 1);
             }
             else {
-                setIsButtonVisible("hidden");
+                setIsButtonVisible(false);
                 alert("please insert proper search request")
             }
         } catch (error) {
@@ -72,7 +72,7 @@ const ImageFinder = () => {
     
     const openModal = (event) => {
         event.preventDefault();
-        setIsModalVisible("visible");
+        setIsModalVisible(true);
         setImageLargeURL(event.currentTarget.href)
         setAlt(event.target.alt)
     }    
@@ -81,16 +81,16 @@ const ImageFinder = () => {
         if (event.target.nodeName==="IMG") {
             return
         }
-        setIsModalVisible("hidden");
+        setIsModalVisible(false);
         setImageLargeURL("");
 
     }
     const closeModalByEsc = (event) => {
         if (event.keyCode === 27) {
-            setIsModalVisible("hidden");
+            setIsModalVisible(false);
         }
     };
-    if (isModalVisible === "visible") {
+    if (isModalVisible === true) {
             document.addEventListener('keydown', closeModalByEsc)
         } 
     const renderImages = (images) => {

@@ -5,7 +5,7 @@ const Button = ({loadMore, isButtonVisible})=> {
 
         return (
             <button className="Button" onClick={loadMore}
-                style={{ visibility: isButtonVisible }}>Load more</button>
+                style={{ visibility: isButtonVisible ? "visible" : "hidden"}}>Load more</button>
         )
     }
 
